@@ -64,6 +64,7 @@ var budgetController = (function(){
 
 // UI CONTROLLER
 var UIController = (function(){
+    // Private
     var DOMstrings = {
         inputType: '.add__type',
         inputDescription: '.add__description',
@@ -73,6 +74,7 @@ var UIController = (function(){
         expensesContainer: '.expenses__list'
 
     }
+    // Return public methods that can be accessed by all 
     return {
         getInput: function(){
             return {
@@ -100,6 +102,18 @@ var UIController = (function(){
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
 
 
+        },
+
+        clearFields: function(){
+            var fields, fieldsArr;
+            fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+            // Fields are nodeLists, not array, we need to apply array methond
+            fieldsArr = Array.prototype.slice.call(fields); // Turn nodelists to array use array's slice method
+            fieldsArr.forEach(function(currenValue, index, array){
+                currenValue.value = "";
+            })
+            fieldsArr[0].focus();
+            
         },
 
         getDOMstrings: function(){
@@ -138,9 +152,14 @@ var controller = (function(budgetCtrl, UICtrl){
         // 3. Add the item to the UI
         UICtrl.addListItem(newItem,input.type);
 
-        // 4. Calculate the budget
 
-        // 5. Display the budget on the UI 
+        // 4. Clear the fields
+        UICtrl.clearFields();
+
+        // 5. Calculate the budget
+
+
+        // 6. Display the budget on the UI 
     }
 
     return {
