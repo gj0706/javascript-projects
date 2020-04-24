@@ -60,6 +60,22 @@ var budgetController = (function(){
             // Return the new element
             return newItem;
         },
+
+        deleteItem: function(type, id){
+            var ids, index;
+            // loop through all the object using map(). The difference between map and forEach is: map() returns a new array
+            ids = data.allItems[type].map(function(current){
+                return current.id;
+            });
+            // Find the index of id we want to delete
+            index = ids.indexOf(id);
+            // index === -1 means no item to delete
+            if(index !== -1){
+                // Use splice() to delete 1 element
+                data.allItems[type].splice(index, 1);
+            }
+
+        },
         
         calculateBudget: function(){
             // Calculate total income and expenses
@@ -148,12 +164,12 @@ var UIController = (function(){
         clearFields: function(){
             var fields, fieldsArr;
             fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
-            // Fields are nodeLists, not array, we need to apply array methond
+            // Fields are nodeLists, not array, we need to apply array methond. slice() is used to create a copy of an array
             fieldsArr = Array.prototype.slice.call(fields); // Turn nodelists to array use array's slice method
             fieldsArr.forEach(function(currenValue, index, array){
                 currenValue.value = "";
             })
-            // Place the 
+            // Place the cursor to the description field.
             fieldsArr[0].focus();
             
         },
@@ -186,12 +202,16 @@ var UIController = (function(){
 var controller = (function(budgetCtrl, UICtrl){
     var setupEventListeners = function(){
         var DOM = UICtrl.getDOMstrings();
+        // Set up the event listener for item addition
         document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
+
+        // Eventlistener for submit button
         document.addEventListener('keypress', function(event){
             if (event.keyCode === 13 || event.which === 13){
                 ctrlAddItem();
             }
         });
+        // Set up the eventlistener to do event delegation for item deletion
         document.querySelector(DOM.container).addEventListener('click',ctrlDeleteItem);
     };
     
@@ -230,20 +250,20 @@ var controller = (function(budgetCtrl, UICtrl){
     
     var ctrlDeleteItem = function(event){
         var itemID, splitID, type, ID;
+        // Locate the target element (the cross button) and traverse up the DOM to parent node, then find the parent id
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
         if (itemID){
             // inc-1
             splitID = itemID.split('-');
             type = splitID[0];
-            ID = splitID[1];
+            ID = parseInt(splitID[1]); // IDs are strings, but we need to pass it as an int to deleteItem function
 
             // 1. Delete the item from the data structure
-
+            budgetCtrl.deleteItem(type, ID);
             // 2. Delete the item from the UI
 
             // 3. Update and show the new budget
         }
-
     };
 
     return {
