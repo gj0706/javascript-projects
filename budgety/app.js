@@ -155,7 +155,8 @@ var UIController = (function(){
         incomeLabel: '.budget__income--value',
         expensesLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
-        container: '.container'
+        container: '.container',
+        expensesPercLabel: '.item__percentage'
 
     }
     // Return public methods that can be accessed by all 
@@ -214,9 +215,28 @@ var UIController = (function(){
             if (obj.percentage > 0){
                 document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
             }else{
-                document.querySelector(DOMstrings.percentageLabel).textContent = '--';
+                document.querySelector(DOMstrings.percentageLabel).textContent = '---';
             }
 
+        },
+
+        displayPercentages: function(percentages){
+            var fields = document.querySelectorAll(DOMstrings.expensesPercLabel); // returns DOM nodeLists, not array
+            
+            // Create our own forEach function for nodeLists by using powerful higher order function     
+            var nodeListForEach = function(list, callback){
+                for (var i = 0; i < list.length; i++){
+                    callback(list[i], i); 
+                }
+            }
+
+            nodeListForEach(fields, function(current, index){
+                if (percentages[index] > 0){
+                    current.textContent = percentages[index] + '%'; 
+                }else{
+                    current.textContent = '---';
+                }
+            });
         },
 
         getDOMstrings: function(){
@@ -266,7 +286,7 @@ var controller = (function(budgetCtrl, UICtrl){
         // 2. Read percentages from the budget controller
         var percentages = budgetCtrl.getPercentages();
         // 3. Update the user UI with the new percentages
-        console.log(percentages);
+        UICtrl.displayPercentages(percentages);
     };
     
     var ctrlAddItem = function(){
