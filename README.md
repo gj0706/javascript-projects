@@ -12,3 +12,5 @@ Rules:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 ## Budgety:
+Link: [Budgety](https://gj0706.github.io/javascript-projects/budgety/index.html)
+
