@@ -1,5 +1,10 @@
 # javascript-projects
-Some web apps to practice JavaScript. 
+Built three web projects using vanilla JavaScript followed Jonas Schmedtmann's course
+on Udemy: "The complete JavaScript Course
+2020: Build Real Projects". 
+
+Key concepts and techniques practiced: DOM, ES6, AJAX, NPM, Babel, Webpack, MVC architecture, etc. 
+
 ## Pig Game:
 Link: [pig game](https://gj0706.github.io/javascript-projects/pig-game/index.html)
 
@@ -14,3 +19,4 @@ Rules:
 ## Budgety:
 Link: [Budgety](https://gj0706.github.io/javascript-projects/budgety/index.html)
 
+## Forkify:
