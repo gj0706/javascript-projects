@@ -28,12 +28,19 @@ const controlSearch = async ()=>{
         searchView.clearInput();
         searchView.clearResults();
         renderLoader(elements.searchRes);
-        // 4) Search for recipes
-        await state.search.getResults(); // an async function returns a promise
 
-        // 5) render results on UI
-        clearLoader();
-        searchView.renderResults(state.search.result)
+        try {
+            // 4) Search for recipes
+            await state.search.getResults(); // an async function returns a promise
+
+            // 5) render results on UI
+            clearLoader();
+            searchView.renderResults(state.search.result);
+        } catch (err) {
+            alert('Something went wrong with the search...');
+            clearLoader();
+        }
+
     }
 }
 
@@ -54,6 +61,36 @@ elements.searchResPages.addEventListener('click', e=> {
 /**
  * RECIPE CONTROLLER
  */
-const r = new Recipe(46956);
-r.getRecipe();
-console.log(r);
+
+const controlRecipe = async () => { // async function to return a promise
+    // Get Id from url
+    const id = window.location.hash.replace('#', ''); //window.location shos the entir url
+    console.log(id);
+    if (id) {
+        // Prepare UI for changes
+
+        // Create new recipe object
+        state.recipe = new Recipe(id);
+        try {
+            // Get recipe data
+            await state.recipe.getRecipe(); // await: load recipe data in the background and only be executed after we get back the data.
+
+            // Calculate servings and time
+            state.recipe.calcServings();
+            state.recipe.calcTime();
+
+            // Render the recipe
+            console.log(state.recipe);
+        } catch (err) {
+            alert('Error processing recipe!');
+        }
+
+
+    }
+}
+
+// Add the same eventListener: controlRecipe to the different events: 'hashchange' and 'load'
+// window.addEventListener('hashchange', controlRecipe);
+// window.addEventListener('load', controlRecipe);
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
