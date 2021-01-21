@@ -1,0 +1,16 @@
+{
+  "name": "forkify_new",
+  "version": "1.0.0",
+  "description": "Recipe app",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Jian Guo",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.0.0-nightly.540",
+    "sass": "^1.32.4"
+  }
+}
